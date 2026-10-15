@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROJECT ZD | Classified</title>
+
+<style>
+:root {
+  --red: #ff344f;
+  --green: #70ffb2;
+  --bg: #07090d;
+  --panel: #10151d;
+  --muted: #9aa4b2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at top, #17212e 0%, #07090d 55%);
+  color: #f4f7fb;
+  padding: 20px;
+}
+
+.container {
+  max-width: 650px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  padding: 25px 10px;
+  border-bottom: 1px solid #28313d;
+}
+
+.badge {
+  display: inline-block;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 6px 12px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  border-radius: 4px;
+}
+
+h1 {
+  font-size: clamp(28px, 7vw, 43px);
+  letter-spacing: 4px;
+  margin: 18px 0 8px;
+}
+
+h1 span {
+  color: var(--red);
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.panel {
+  margin-top: 25px;
+  padding: 24px;
+  background: rgba(16, 21, 29, 0.94);
+  border: 1px solid #28313d;
+  border-radius: 14px;
+  box-shadow: 0 15px 45px #0006;
+}
+
+.topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--green);
+  margin-bottom: 18px;
+}
+
+.progress-track {
+  height: 5px;
+  background: #252d38;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+#progress {
+  height: 100%;
+  width: 0%;
+  background: var(--green);
+  transition: width .3s;
+}
+
+#question {
+  font-size: 21px;
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+
+.answers {
+  display: grid;
+  gap: 12px;
+}
+
+.answer {
+  width: 100%;
+  padding: 15px;
+  text-align: left;
+  color: #edf2f8;
+  background: #151c26;
+  border: 1px solid #303a48;
+  border-radius: 9px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.answer:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+}
+
+.answer.selected {
+  border-color: var(--green);
+  background: #173327;
+}
+
+.answer:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+button {
+  font-family: inherit;
+}
+
+.primary {
+  display: block;
+  width: 100%;
+  margin-top: 23px;
+  padding: 15px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--green);
+  color: #07110c;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.small-note {
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+  margin-top: 18px;
+  line-height: 1.6;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#result {
+  text-align: center;
+}
+
+.result-icon {
+  font-size: 65px;
+  margin: 10px 0;
+}
+
+#result h2 {
+  font-size: 29px;
+  line-height: 1.4;
+}
+
+#result p {
+  color: #c1cbd8;
+  line-height: 1.8;
+}
+
+.score {
+  font-size: 18px;
+  color: var(--green) !important;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  color: #667180;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 25px 5px;
+}
+
+@media (max-width: 420px) {
+  body {
+    padding: 12px;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+
+  #question {
+    font-size: 19px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="badge">CLASSIFIED PROJECT</div>
+  <h1>PROJECT <span>ZD</span></h1>
+  <p class="subtitle">
+    FRIENDSHIP INTELLIGENCE DIVISION<br>
+    SUBJECT: ZAIN DAYO<br>
+    ACCESS LEVEL: BEST FRIEND
+  </p>
+</header>
+
+<section class="panel" id="quiz">
+  <div class="topline">
+    <span>AGENT ZD</span>
+    <span id="counter">QUESTION 01 / 10</span>
+  </div>
+
+  <div class="progress-track">
+    <div id="progress"></div>
+  </div>
+
+  <h2 id="question"></h2>
+
+  <div class="answers" id="answers"></div>
+
+  <button class="primary" id="next" disabled>
+    LOCK IN ANSWER →
+  </button>
+
+  <p class="small-note">
+    WARNING: Answers may be used against you in future arguments. 😂
+  </p>
+</section>
+
+<section class="panel hidden" id="result">
+  <div class="result-icon">🕵️‍♀️</div>
+  <div class="badge">MISSION REPORT</div>
+  <h2 id="resultTitle"></h2>
+  <p class="score" id="score"></p>
+  <p id="resultText"></p>
+  <button class="primary" onclick="restartQuiz()">
+    RETAKE THE TEST ↻
+  </button>
+</section>
+
+<footer>
+  PROJECT ZD © FRIENDSHIP DEPARTMENT<br>
+  UNAUTHORIZED BORING PEOPLE WILL BE REJECTED.
+</footer>
+
+</div>
+
+<script>
+const questions = [
+  {
+    question: "1. When we are chatting, what is most likely to happen?",
+    answers: [
+      "We start laughing at something completely random",
+      "We discuss serious world affairs for 6 hours",
+      "We communicate only through official emails",
+      "We accidentally start a business"
+    ]
+  },
+  {
+    question: "2. If I suddenly went quiet, what would you do?",
+    answers: [
+      "Check if I'm okay",
+      "Assume I have been kidnapped by aliens",
+      "Send memes until I respond",
+      "Enjoy the peace while it lasts 😂"
+    ]
+  },
+  {
+    question: "3. What is the fastest way to make a conversation awkward?",
+    answers: [
+      "Replying with just 'okay'",
+      "Sending a funny video",
+      "Saying hello",
+      "Using too many emojis"
+    ]
+  },
+  {
+    question: "4. If we had a whole day to hang out, what would be the vibe?",
+    answers: [
+      "Food, jokes and random adventures",
+      "A meeting with a strict timetable",
+      "Sitting silently in separate rooms",
+      "Planning world domination"
+    ]
+  },
+  {
+    question: "5. What kind of friend do you think I am?",
+    answers: [
+      "The funny one who can also be serious",
+      "A mysterious government agent",
+      "A professional troublemaker",
+      "Still collecting evidence 😂"
+    ]
+  },
+  {
+    question: "6. If we disagreed about something, what should happen?",
+    answers: [
+      "Talk it out and understand each other",
+      "Start a 12-round debate championship",
+      "Let the friendship court decide",
+      "Send a lawyer immediately"
+    ]
+  },
+  {
+    question: "7. What would make our friendship even better?",
+    answers: [
+      "More honest conversations",
+      "More memorable adventures",
+      "More jokes and shared moments",
+      "ALL OF THE ABOVE, OBVIOUSLY!"
+    ]
+  },
+  {
+    question: "8. If I told you a ridiculous story, what would you do?",
+    answers: [
+      "Laugh first, investigate later",
+      "Demand evidence and witnesses",
+      "Believe every single word",
+      "Turn it into a Netflix series"
+    ]
+  },
+  {
+    question: "9. Which friendship rule deserves to be permanent?",
+    answers: [
+      "Be real with each other",
+      "Never let the jokes die",
+      "Show up when it matters",
+      "All three. No negotiations."
+    ]
+  },
+  {
+    question: "10. Final investigation: what is Zain Dayo to this project?",
+    answers: [
+      "The main character, obviously",
+      "A highly classified suspect",
+      "The CEO of good vibes",
+      "A legend still under investigation"
+    ]
+  }
+];
+
+let currentQuestion = 0;
+let selectedAnswers = [];
+
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const nextButton = document.getElementById("next");
+const counter = document.getElementById("counter");
+const progress = document.getElementById("progress");
+
+function showQuestion() {
+  const item = questions[currentQuestion];
+
+  counter.textContent =
+    `QUESTION ${String(currentQuestion + 1).padStart(2, "0")} / 10`;
+
+  progress.style.width = `${(currentQuestion / questions.length) * 100}%`;
+  questionElement.textContent = item.question;
+  answersElement.innerHTML = "";
+  nextButton.disabled = true;
+
+  item.answers.forEach((answer, index) => {
+    const button = document.createElement("button");
+
+    button.className = "answer";
+    button.textContent = `${String.fromCharCode(65 + index)}. ${answer}`;
+
+    button.addEventListener("click", () => {
+      selectedAnswers[currentQuestion] = index;
+
+      document.querySelectorAll(".answer").forEach(option => {
+        option.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+      nextButton.disabled = false;
+    });
+
+    answersElement.appendChild(button);
+  });
+
+  nextButton.textContent =
+    currentQuestion === questions.length - 1
+      ? "COMPLETE THE MISSION 🚀"
+      : "LOCK IN ANSWER →";
+}
+
+nextButton.addEventListener("click", () => {
+  if (selectedAnswers[currentQuestion] === undefined) return;
+
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    showQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+
+  progress.style.width = "100%";
+
+  document.getElementById("resultTitle").textContent =
+    "ZAIN DAYO HAS SURVIVED THE INTERROGATION! 😂";
+
+  document.getElementById("score").textContent =
+    "10 QUESTIONS. ZERO ESCAPE ROUTES.";
+
+  document.getElementById("resultText").textContent =
+    "After extensive investigation, questionable questions and unnecessary government-level security, one thing is clear: Zain Dayo is officially a VIP in this friendship department. Our friendship is still loading, the memories are still being made, and the best stories are probably yet to come. 😂🕺";
+
+  launchCelebration();
+}
+
+function restartQuiz() {
+  currentQuestion = 0;
+  selectedAnswers = [];
+
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+
+  showQuestion();
+}
+
+function launchCelebration() {
+  const style = document.createElement("style");
+
+  style.textContent = `
+    .celebration {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 999;
+    }
+
+    .flower {
+      position: absolute;
+      bottom: -80px;
+      font-size: 28px;
+      animation: flowerRise 4s ease-out forwards;
+    }
+
+    @keyframes flowerRise {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      15% { opacity: 1; }
+      100% {
+        transform: translateY(-110vh) rotate(540deg);
+        opacity: 0;
+      }
+    }
+
+    .firework {
+      position: absolute;
+      bottom: 0;
+      font-size: 23px;
+      animation: shootUp 1.2s ease-out forwards;
+    }
+
+    @keyframes shootUp {
+      0% {
+        transform: translateY(0) scale(.5);
+        opacity: 1;
+      }
+      75% { opacity: 1; }
+      100% {
+        transform: translateY(-70vh) scale(1.8);
+        opacity: 0;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  const layer = document.createElement("div");
+  layer.className = "celebration";
+  document.body.appendChild(layer);
+
+  const emojis = ["🌹", "🌸", "💐", "🌷", "🌺", "✨", "💖"];
+
+  for (let i = 0; i < 45; i++) {
+    const flower = document.createElement("span");
+    flower.className = "flower";
+    flower.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    flower.style.left = Math.random() * 100 + "%";
+    flower.style.animationDelay = Math.random() * 2 + "s";
+
+    layer.appendChild(flower);
+  }
+
+  for (let i = 0; i < 12; i++) {
+    const firework = document.createElement("span");
+    firework.className = "firework";
+    firework.textContent = "🎆";
+    firework.style.left = Math.random() * 100 + "%";
+    firework.style.animationDelay = Math.random() * 2 + "s";
+
+    layer.appendChild(firework);
+  }
+
+  setTimeout(() => layer.remove(), 7500);
+}
+
+showQuestion();
+</script>
+</body>
+</html>
